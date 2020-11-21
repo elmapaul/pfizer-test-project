@@ -5,9 +5,9 @@
 The application was bootstraped using [Create React App](https://reactjs.org/docs/create-a-new-react-app.html). You can add any aditional libraries like the below:
 
 - [React Router](https://github.com/ReactTraining/react-router) - for client-side (browser) routing
-- [axios](https://github.com/axios/axios) - for HTTP requests
-- any UI library such as [Ant Design](https://ant.design/), [reactstrap](https://reactstrap.github.io/) or [Material UI](https://material-ui.com/)
-- any other global state management tool such as [ContextAPI](https://reactjs.org/docs/context.html), [Redux](https://redux.js.org/) or [MobX](https://mobx.js.org/).
+- [Axios](https://github.com/axios/axios) - for HTTP requests
+- [Material UI](https://material-ui.com/)
+- [ContextAPI](https://reactjs.org/docs/context.html)
 
 ## Fake REST API
 
@@ -22,6 +22,10 @@ npm install
 npm run api // Runs API server in port 3001
 npm start // Runs the create react app server in port 3000
 open http://localhost:3000
+
+OR
+
+npm start spa:api // Runs CRA and API
 ```
 
 When you are ready start implementing the below user stories. The screenshots where taken after using [reactstrap](https://reactstrap.github.io/) (a Bootstrap implementation for React) UI library, but feel free to use whichever one you like. Just use the components that make more sence and display the screens / data nicely.
