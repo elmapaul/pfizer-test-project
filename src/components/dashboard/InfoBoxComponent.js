@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function SimplePaper({text, count}) {
+export default function SimplePaper({title, count}) {
     const classes = useStyles();
 
     return (
@@ -38,7 +38,7 @@ export default function SimplePaper({text, count}) {
             <Paper variant='outlined' className={classes.boxWrap}>
                 {/*Label*/}
                 <Typography variant='h4' style={{color: '#6c757d'}}>
-                    {text}
+                    {title}
                 </Typography>
 
                 {/*Quantity*/}

@@ -9,14 +9,12 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import clsx from "clsx";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            // width: 200,
+            margin: theme.spacing(1)
         },
         padding: '0 1em'
     },

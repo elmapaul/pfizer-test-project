@@ -1,45 +1,38 @@
 import NavBar from './components/NavBar';
-import Jumbotron from './components/Jumbotron';
-import InfoBox from "./components/InfoBox";
-import { makeStyles } from '@material-ui/core/styles';
-import TableGrid from "./components/TableGrid";
-import CourseCard from "./components/CourseCard";
-import CourseDetails from "./components/CourseDetails";
-import NewCourseForm from "./components/NewCourseForm";
-
-const useStyles = makeStyles((theme) => ({
-    boxContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: "2em"
-    }
-}));
+import CourseDetails from "./components/course/CourseDetails";
+import NewCourseForm from "./components/course/CreateCourseForm";
+import GridList from "./components/course/GridList";
+import Main from "./components/dashboard/Main";
+import React from "react";
+import {Route, Switch} from "react-router-dom";
+import * as ROUTES from "./shared/routes";
 
 function App() {
-    const classes = useStyles();
-
     return (
-        <div className="App">
+        <div>
             <NavBar/>
-
-
-            <NewCourseForm/>
-
-            {/*<Jumbotron/>*/}
-
-            {/*<div>*/}
-            {/*    <CourseDetails />*/}
-            {/*</div>*/}
-
-            {/*<div className={classes.boxContainer}>*/}
-            {/*    <InfoBox text="STUDENTS" count="55"/>*/}
-            {/*    <InfoBox text="STUDENTS" count="55"/>*/}
-            {/*    <InfoBox text="STUDENTS" count="55"/>*/}
-            {/*    <InfoBox text="STUDENTS" count="55"/>*/}
-            {/*</div>*/}
-
-            {/*<TableGrid />*/}
-
+            <Switch>
+                <Route
+                    exact
+                    path={ROUTES.DASHBOARD}
+                    component={Main}
+                />
+                <Route
+                    exact
+                    path={ROUTES.COURSE_NEW}
+                    component={NewCourseForm}
+                />
+                <Route
+                    exact
+                    path={ROUTES.COURSE_BASE_PATH + '/:id'}
+                    component={CourseDetails}
+                />
+                <Route
+                    exact
+                    path={ROUTES.COURSES_ALL}
+                    component={GridList}
+                />
+            </Switch>
         </div>
     );
 }
