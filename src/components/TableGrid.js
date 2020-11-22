@@ -10,11 +10,21 @@ import Paper from '@material-ui/core/Paper';
 import CheckIcon from '@material-ui/icons/Check';
 import InfoIcon from '@material-ui/icons/Info';
 import Button from "@material-ui/core/Button";
+import clsx from "clsx";
 
 const useStyles = makeStyles({
     table: {
         // minWidth: 650,
     },
+    tableDiv: {
+        width: "100%",
+        backgroundColor: "#f7f7f7"
+    },
+    tableFooter: {
+        display: "flex",
+        justifyContent: "flex-end",
+        padding: "1em"
+    }
 });
 
 export default function BasicTable({rows}) {
@@ -22,7 +32,7 @@ export default function BasicTable({rows}) {
 
     return (
         <TableContainer component={Paper}>
-            <div style={{width: "100%", backgroundColor: "#f7f7f7"}}>
+            <div className={classes.tableDiv}>
                 <TableRow>
                     <TableCell>LAST 5 COURSES</TableCell>
                 </TableRow>
@@ -56,14 +66,21 @@ export default function BasicTable({rows}) {
                             </TableCell>
 
                             <TableCell align="right">
-                                <Button variant="contained" color="primary">
-                                    Primary
+                                <Button variant="contained" color="secondary">
+                                    View Details
                                 </Button>
                             </TableCell>
                         </TableRow>
                     {/*))}*/}
                 </TableBody>
             </Table>
+
+            {/*Footer*/}
+            <div className={clsx(classes.tableDiv, classes.tableFooter)}>
+                <Button variant="contained" color="primary">
+                    View All
+                </Button>
+            </div>
         </TableContainer>
     );
 }
