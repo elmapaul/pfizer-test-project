@@ -24,13 +24,12 @@ function App() {
                 />
                 <Route
                     exact
-                    path={ROUTES.COURSE_BASE_PATH + '/:id'}
-                    component={CourseDetails}
-                />
-                <Route
-                    exact
                     path={ROUTES.COURSES_ALL}
                     component={GridList}
+                />
+                <Route
+                    path={ROUTES.COURSE_BASE_PATH + '/:id'}
+                    component={CourseDetails}
                 />
             </Switch>
         </div>

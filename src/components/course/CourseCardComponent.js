@@ -9,13 +9,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import CheckIcon from "@material-ui/icons/Check";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
-        maxWidth: 345,
+        marginBottom: '1.5em',
+        marginRight: '1.5em',
+        maxWidth: '450px'
     },
     media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
+        height: 200
     },
     mb20: {
         marginBottom: "10px"
@@ -26,38 +27,44 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard({data}) {
     const classes = useStyles();
+
+    const { title, price, dates, imagePath, open, duration } = data || '';
 
     return (
         <Card className={classes.root}>
             <CardHeader
-                title="React"
+                title={title}
             />
+
             <CardMedia
                 className={classes.media}
-                image="./angular.png"
-                title="Paella dish"
+                image={imagePath}
+                title={title}
             />
+
             <CardContent>
                 <div className={classes.mb20}>
                     <Typography variant="body1" color="textPrimary" component="p" className={classes.flexVertical}>
-                        Price: &nbsp;<b>500Euro</b> &nbsp;| Bookable:&nbsp; <CheckIcon style={{color: 'red'}}/>
+                        Price: &nbsp;<b>{price?.normal}</b> &nbsp;| Bookable:&nbsp;
+                        {open && <CheckIcon style={{color: 'red'}}/>}
                     </Typography>
                 </div>
 
                 <div className={classes.mb20}>
                     <Typography variant="body1" color="textPrimary" component="p">
-                        Duration: &nbsp;<b>2 Fridays and 4 Saturdays</b>
+                        Duration: &nbsp;<b>{duration}</b>
                     </Typography>
                 </div>
 
                 <div className={classes.mb20}>
                     <Typography variant="body1" color="textPrimary" component="p">
-                        Dates: &nbsp;<b>10/10 - 11/02</b>
+                        Dates: &nbsp;<b>{dates?.start_date} - {dates?.end_date}</b>
                     </Typography>
                 </div>
             </CardContent>
+
             <CardActions style={{display: "flex", justifyContent: "flex-end"}}>
                 <Button variant="contained" color="primary">
                     View

@@ -24,10 +24,12 @@ const Main = () => {
 
     useEffect(() => {
         axios.get(`${API_HOST_NAME}/courses`)
-            .then(({data}) => setCourses(data));
+            .then(({data}) => setCourses(data))
+            .catch(_ => console.log('Error with courses fetching!'));
 
         axios.get(`${API_HOST_NAME}/stats`)
-            .then(({data}) => setStats(data));
+            .then(({data}) => setStats(data))
+            .catch(_ => console.log('Error with stats fetching!'));
     }, []);
 
     return (
@@ -39,7 +41,7 @@ const Main = () => {
                 {stats && stats?.map(({title, amount}) => <InfoBoxComponent title={title.toUpperCase()} key={title} count={amount}/>)}
             </div>
 
-            {courses.length && <TableGrid courses={courses}/>}
+            {courses?.length && <TableGrid courses={courses}/>}
         </main>
     );
 };
