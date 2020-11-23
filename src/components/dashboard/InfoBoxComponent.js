@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     boxWrap: {
-        width: 'auto',
         height: 'auto',
         padding: '2em 10em 2em 2em',
         display: 'flex'
@@ -37,7 +36,7 @@ export default function SimplePaper({title, count}) {
         <div className={classes.root}>
             <Paper variant='outlined' className={classes.boxWrap}>
                 {/*Label*/}
-                <Typography variant='h4' style={{color: '#6c757d'}}>
+                <Typography variant='h5' style={{color: '#6c757d'}}>
                     {title}
                 </Typography>
 

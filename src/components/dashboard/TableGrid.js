@@ -13,9 +13,6 @@ import Button from "@material-ui/core/Button";
 import clsx from "clsx";
 
 const useStyles = makeStyles({
-    table: {
-        // minWidth: 650,
-    },
     tableDiv: {
         width: "100%",
         backgroundColor: "#f7f7f7"
@@ -23,61 +20,65 @@ const useStyles = makeStyles({
     tableFooter: {
         display: "flex",
         justifyContent: "flex-end",
-        padding: "1em"
+        padding: '2em 0'
     }
 });
 
-export default function BasicTable({rows}) {
+export default function BasicTable({courses}) {
     const classes = useStyles();
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{marginBottom: '2em'}}>
             <div className={classes.tableDiv}>
                 <TableRow>
-                    <TableCell>LAST 5 COURSES</TableCell>
+                    <TableCell><b>LAST 5 COURSES</b></TableCell>
                 </TableRow>
             </div>
 
+            {/*Table Content*/}
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Title</TableCell>
-                        <TableCell align="right">Bookable</TableCell>
-                        <TableCell align="right">Price</TableCell>
-                        <TableCell align="right">Date</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell align="center">Title</TableCell>
+                        <TableCell align="center">Bookable</TableCell>
+                        <TableCell align="center">Price</TableCell>
+                        <TableCell align="center">Date</TableCell>
+                        <TableCell align="center">Actions</TableCell>
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
-                    {/*{rows && rows.map((row) => (*/}
-                        <TableRow key={1}>
-                            <TableCell component="th" scope="row">
-                                <InfoIcon />
-                            </TableCell>
-                            <TableCell align="right">
-                                <CheckIcon/>
-                            </TableCell>
-                            <TableCell align="right">
-
+                    {courses && courses?.map(({id, title, price, dates, open}) => (
+                        <TableRow key={id}>
+                            <TableCell component="th">
+                                <InfoIcon style={{color: 'gray', marginRight: '2em'}} /> {title}
                             </TableCell>
 
-                            <TableCell align="right">
-
+                            <TableCell align="center">
+                                {open && <CheckIcon/>}
                             </TableCell>
 
-                            <TableCell align="right">
+                            <TableCell align="center">
+                                {price?.normal}
+                            </TableCell>
+
+                            <TableCell align="center">
+                                {dates?.start_date} - {dates?.end_date}
+                            </TableCell>
+
+                            <TableCell align="center">
                                 <Button variant="contained" color="secondary">
                                     View Details
                                 </Button>
                             </TableCell>
                         </TableRow>
-                    {/*))}*/}
+                    ))}
                 </TableBody>
             </Table>
 
             {/*Footer*/}
             <div className={clsx(classes.tableDiv, classes.tableFooter)}>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" size="large" style={{marginRight: '2em'}}>
                     View All
                 </Button>
             </div>

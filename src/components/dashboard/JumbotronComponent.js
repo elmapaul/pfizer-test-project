@@ -22,7 +22,7 @@ export default function CenteredGrid() {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={3}>
+            <Grid container>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <Typography variant="h2">
