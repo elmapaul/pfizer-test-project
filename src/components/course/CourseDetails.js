@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -7,11 +7,14 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import CheckIcon from "@material-ui/icons/Check";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import axios from "axios";
+import {API_HOST_NAME} from "../../shared/routes";
+import {useParams} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     media: {
-        maxHeight: 345,
-        paddingTop: '56.25%', // 16:9
+        height: 400
     },
     mb20: {
         marginBottom: "10px"
@@ -22,86 +25,140 @@ const useStyles = makeStyles((theme) => ({
     flexVertical: {
         display: 'flex',
         alignItems: 'center'
+    },
+    rowFlex: {
+        display: 'flex',
+        justifyContent: 'space-between'
     }
 }));
 
 export default function RecipeReviewCard() {
     const classes = useStyles();
+    const [loading, setLoading] = useState(true);
+    const [course, setCourse] = useState({});
+    const [instructors, setInstructors] = useState([]);
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        const url = `${API_HOST_NAME}/courses/${("0" + id).slice(-2)}`;
+
+        axios.get(url)
+            .then(({data}) => {
+                const courseDetails = data;
+                setCourse(courseDetails);
+
+                // Fetch all instructors
+                axios.get(`${API_HOST_NAME}/instructors`)
+                    .then(({data}) => {
+                        // Filter by id only contained in course object
+                        const filteredInstuctors = data?.filter(i => courseDetails?.instructors?.includes(i?.id));
+
+                        setInstructors(filteredInstuctors);
+                    })
+                    .catch(_ => console.log('Error with instructors fetching!'))
+                    .finally(() => setLoading(false));
+            })
+            .catch(_ => console.log('Error with courses fetching!'))
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) {
+        return (
+            <div style={{ marginTop: '8em', textAlign: 'center'}}>
+                <CircularProgress />
+            </div>
+        )
+    }
 
     return (
-        <Card className={classes.root}>
-            <CardHeader
-                title="React"
-            />
-            <CardMedia
-                className={classes.media}
-                image="./angular.png"
-                title="Paella dish"
-            />
+        <>
             <br/>
-            <hr/>
-            <br/>
-            <CardContent>
-                <div className={classes.mb20}>
-                    <Typography variant="body1" color="textPrimary" component="p" className={classes.flexVertical}>
-                        Price: &nbsp;<b>500Euro</b>
-                    </Typography>
-                </div>
 
-                <div className={classes.mb20}>
-                    <Typography variant="body1" color="textPrimary" component="p" className={classes.flexVertical}>
-                            Bookable:&nbsp; <CheckIcon style={{color: 'red'}}/>
-                    </Typography>
-                </div>
-
-                <div className={classes.mb20}>
-                    <Typography variant="body1" color="textPrimary" component="p">
-                        Duration: &nbsp;<b>2 Fridays and 4 Saturdays</b>
-                    </Typography>
-                </div>
-
-                <div className={classes.mb20}>
-                    <Typography variant="body1" color="textPrimary" component="p">
-                        Dates: &nbsp;<b>10/10 - 11/02</b>
-                    </Typography>
-                </div>
-
-                <p style={{display: 'flex'}}>
-                    <Typography variant="body1" color="textPrimary" component="p">
-                        This is a certified program by Athens Tech College, the first educational institution in Greece that specialises in computer science and ICT studies.
-                        <br/><br/>
-                        Participant's registration (payment's completion) implies full compliance and acceptance of Code.Learn Terms & Conditions.
-                    </Typography>
-                </p>
-
-                <div className={classes.mb20}>
-                    <Button variant="contained" color="default">
-                        Edit
-                    </Button>
-                    <Button variant="contained" color="secondary" style={{marginLeft: "1em"}}>
-                        Delete
-                    </Button>
-                </div>
-
-                <div className={classes.mt40}>
-                    <Typography variant="h4" color="textPrimary" component="p">
-                        Instructors
-                    </Typography>
+            {!loading && !!course &&
+                <Card>
+                    <CardHeader title={course?.title}/>
                     <br/>
-                    <Typography variant="h5" color="textPrimary" component="p">
-                        John Tsevdos (1982-02-26)
-                    </Typography>
+                    <CardMedia
+                        className={classes.media}
+                        image={course?.imagePath}
+                        title={course?.title}
+                    />
                     <br/>
-                    <Typography variant="h6" color="textPrimary" component="p">
-                        Email: tsevdosjohn@gmail.com | LinkedIn
-                    </Typography>
+                    <hr/>
                     <br/>
-                    <Typography variant="h6" color="textPrimary" component="p">
-                        Front-end developer from Athens, Greece
-                    </Typography>
+                    <CardContent>
+                        <div className={classes.rowFlex}>
+                            <div className={classes.mb20}>
+                                <Typography variant="h3" color="textPrimary" component="p" className={classes.flexVertical}>
+                                    Price: &nbsp;<b>{course?.price?.normal} EUROS</b>
+                                </Typography>
+                            </div>
 
-                </div>
-            </CardContent>
-        </Card>
+                            <div className={classes.mb20}>
+                                <Typography variant="h3" color="textPrimary" component="p" className={classes.flexVertical}>
+                                    Bookable:&nbsp;
+                                    {course?.open ? <CheckIcon style={{color: 'red'}}/> : 'NOT'}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className={classes.rowFlex}>
+                            <div className={classes.mb20}>
+                                <Typography variant="h3" color="textPrimary" component="p">
+                                    Duration: &nbsp;<b>{course?.duration}</b>
+                                </Typography>
+                            </div>
+
+                            <div className={classes.mb20}>
+                                <Typography variant="h3" color="textPrimary" component="p">
+                                    Dates: &nbsp;<b>{course?.dates?.start_date} - {course?.dates?.end_date}</b>
+                                </Typography>
+                            </div>
+                        </div>
+
+                        <p style={{display: 'flex'}}>
+                            <Typography variant="body1" color="textPrimary" component="p" >
+                                <span dangerouslySetInnerHTML={{__html: course?.description}}/>
+                            </Typography>
+                        </p>
+
+                        <div className={classes.mb20}>
+                            <Button variant="contained" color="default">
+                                Edit
+                            </Button>
+                            <Button variant="contained" color="secondary" style={{marginLeft: "1em"}}>
+                                Delete
+                            </Button>
+                        </div>
+
+                        {/*INSTRUCTORS SECTION*/}
+                        <div className={classes.mt40}>
+                            <Typography variant="h4" color="textPrimary" component="p">
+                                Instructors
+                            </Typography>
+                            <br/>
+
+                            {instructors?.map(({name, dob, email, linkedin, bio}, id) =>
+                                (
+                                    <span key={id}>
+                                        <Typography variant="h5" color="textPrimary" component="p">
+                                            {`${name?.first} ${name?.last} (${dob})`}
+                                        </Typography>
+                                        <br/>
+                                        <Typography variant="h6" color="textPrimary" component="p">
+                                            Email: {email} | <a href={linkedin} target="_blank">LinkedIn</a>
+                                        </Typography>
+                                        <br/>
+                                        <Typography variant="h6" color="textPrimary" component="p">
+                                            {bio}
+                                        </Typography>
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </CardContent>
+                </Card>
+            }
+        </>
     );
 }

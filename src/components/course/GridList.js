@@ -34,7 +34,9 @@ export default function GridList() {
             </Typography>
 
             <div className={classes.wrapper}>
-                {courses?.length && courses?.map(course => <CourseCardComponent key={course?.title} data={course}/>)}
+                {
+                    courses?.length && courses?.map(course => <CourseCardComponent key={course?.title} data={course}/>)
+                }
             </div>
         </div>
     );
