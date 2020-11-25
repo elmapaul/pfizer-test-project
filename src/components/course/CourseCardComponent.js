@@ -8,6 +8,8 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import CheckIcon from "@material-ui/icons/Check";
+import {COURSE_BASE_PATH} from "../../shared/routes";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -30,7 +32,7 @@ const useStyles = makeStyles(() => ({
 export default function RecipeReviewCard({data}) {
     const classes = useStyles();
 
-    const { title, price, dates, imagePath, open, duration } = data || '';
+    const { title, price, dates, imagePath, open, duration, id } = data || '';
 
     return (
         <Card className={classes.root}>
@@ -66,9 +68,11 @@ export default function RecipeReviewCard({data}) {
             </CardContent>
 
             <CardActions style={{display: "flex", justifyContent: "flex-end"}}>
-                <Button variant="contained" color="primary">
-                    View
-                </Button>
+                <Link to={`${COURSE_BASE_PATH}/${id}`} style={{textDecoration: "none"}}>
+                    <Button variant="contained" color="primary">
+                        View
+                    </Button>
+                </Link>
             </CardActions>
         </Card>
     );

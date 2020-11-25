@@ -46,6 +46,7 @@ export default function RecipeReviewCard() {
         axios.get(url)
             .then(({data}) => {
                 const courseDetails = data;
+                console.log('course details', data);
                 setCourse(courseDetails);
 
                 // Fetch all instructors

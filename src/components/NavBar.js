@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import {COURSES_ALL, COURSE_NEW} from "../shared/routes";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,10 +33,13 @@ export default function ButtonAppBar() {
                     <Typography variant="h4" className={classes.title}>
                         Code.Hub Dashboard
                     </Typography>
+                    <Link to={COURSES_ALL} style={{textDecoration: "none", color: "inherit"}}>
+                        <Button color="inherit" className={classes.btnCourses}>Courses</Button>
+                    </Link>
 
-                    <Button color="inherit" className={classes.btnCourses}>Courses</Button>
-
-                    <Button color="inherit">Add new course</Button>
+                    <Link to={COURSE_NEW} style={{textDecoration: "none", color: "inherit"}}>
+                        <Button color="inherit">Add new course</Button>
+                    </Link>
                 </Toolbar>
             </AppBar>
         </div>

@@ -11,6 +11,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import InfoIcon from '@material-ui/icons/Info';
 import Button from "@material-ui/core/Button";
 import clsx from "clsx";
+import {Link} from "react-router-dom";
+import { COURSE_BASE_PATH, COURSES_ALL } from "./../../shared/routes";
 
 const useStyles = makeStyles({
     tableDiv: {
@@ -67,9 +69,11 @@ export default function BasicTable({courses}) {
                             </TableCell>
 
                             <TableCell align="center">
-                                <Button variant="contained" color="secondary">
-                                    View Details
-                                </Button>
+                                <Link to={`${COURSE_BASE_PATH}/${id}`} style={{textDecoration: "none"}}>
+                                    <Button variant="contained" color="secondary">
+                                        View Details
+                                    </Button>
+                                </Link>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -78,9 +82,11 @@ export default function BasicTable({courses}) {
 
             {/*Footer*/}
             <div className={clsx(classes.tableDiv, classes.tableFooter)}>
-                <Button variant="contained" color="primary" size="large" style={{marginRight: '2em'}}>
-                    View All
-                </Button>
+                <Link to={COURSES_ALL} style={{textDecoration: "none"}}>
+                    <Button variant="contained" color="primary" size="large" style={{marginRight: '2em'}}>
+                        View All
+                    </Button>
+                </Link>
             </div>
         </TableContainer>
     );
