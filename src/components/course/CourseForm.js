@@ -53,10 +53,11 @@ const courseShape = {
     "description": ""
 };
 
-export default function ValidationTextFields() {
+export default function CourseForm({location}) {
     const classes = useStyles();
 
-    const [newCourse, setNewCourse] = useState(courseShape);
+    const { course } = location;
+    const [newCourse, setNewCourse] = useState(course || courseShape);
 
     const {
         title,
@@ -65,7 +66,6 @@ export default function ValidationTextFields() {
         duration,
         description,
         price,
-        dates,
         open: isOpen,
     } = newCourse;
 

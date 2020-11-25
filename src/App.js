@@ -1,6 +1,6 @@
 import NavBar from './components/NavBar';
 import CourseDetails from "./components/course/CourseDetails";
-import NewCourseForm from "./components/course/CreateCourseForm";
+import NewCourseForm from "./components/course/CourseForm";
 import GridList from "./components/course/GridList";
 import Main from "./components/dashboard/Main";
 import React from "react";
@@ -21,6 +21,11 @@ function App() {
                     exact
                     path={ROUTES.COURSE_NEW}
                     component={NewCourseForm}
+                />
+                <Route
+                    exact
+                    path={ROUTES.COURSE_EDIT}
+                    component={(course) => NewCourseForm(course)}
                 />
                 <Route
                     exact

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -9,8 +9,10 @@ import Button from "@material-ui/core/Button";
 import CheckIcon from "@material-ui/icons/Check";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from "axios";
-import {API_HOST_NAME} from "../../shared/routes";
-import {useParams} from "react-router-dom";
+import {API_HOST_NAME, COURSE_EDIT} from "../../shared/routes";
+import {Link, useParams, useHistory} from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -32,21 +34,27 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function RecipeReviewCard() {
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
     const [course, setCourse] = useState({});
     const [instructors, setInstructors] = useState([]);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
 
+    const history = useHistory();
     const { id } = useParams();
 
     useEffect(() => {
+        // Build specific URL with id
         const url = `${API_HOST_NAME}/courses/${("0" + id).slice(-2)}`;
 
         axios.get(url)
             .then(({data}) => {
                 const courseDetails = data;
-                console.log('course details', data);
                 setCourse(courseDetails);
 
                 // Fetch all instructors
@@ -63,6 +71,20 @@ export default function RecipeReviewCard() {
             .catch(_ => console.log('Error with courses fetching!'))
             .finally(() => setLoading(false));
     }, []);
+
+    const handleDeleteCourse = async (id) => {
+        try{
+            await axios.delete(`${API_HOST_NAME}/courses/${id}`);
+
+            setSnackIsOpen(true);
+
+            setTimeout(() => {
+                history.goBack();
+            }, 1500);
+        } catch {
+            console.log("Error with deleting course!");
+        }
+    };
 
     if (loading) {
         return (
@@ -124,10 +146,15 @@ export default function RecipeReviewCard() {
                         </p>
 
                         <div className={classes.mb20}>
-                            <Button variant="contained" color="default">
-                                Edit
-                            </Button>
-                            <Button variant="contained" color="secondary" style={{marginLeft: "1em"}}>
+                            <Link to={{
+                                pathname: COURSE_EDIT,
+                                course
+                            }} style={{textDecoration: "none"}}>
+                                <Button variant="contained" color="default">
+                                    Edit
+                                </Button>
+                            </Link>
+                            <Button onClick={() => handleDeleteCourse(course?.id)} variant="contained" color="secondary" style={{marginLeft: "1em"}}>
                                 Delete
                             </Button>
                         </div>
@@ -160,6 +187,12 @@ export default function RecipeReviewCard() {
                     </CardContent>
                 </Card>
             }
+
+            <Snackbar open={snackIsOpen} autoHideDuration={6000}>
+                <Alert severity="info">
+                    Course has been removed successfully!
+                </Alert>
+            </Snackbar>
         </>
     );
 }

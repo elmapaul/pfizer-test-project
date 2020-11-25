@@ -50,7 +50,7 @@ export default function BasicTable({courses}) {
                 </TableHead>
 
                 <TableBody>
-                    {courses && courses?.map(({id, title, price, dates, open}) => (
+                    {courses && courses?.slice(-5)?.map(({id, title, price, dates, open}) => (
                         <TableRow key={id}>
                             <TableCell component="th">
                                 <InfoIcon style={{color: 'gray', marginRight: '2em'}} /> {title}
