@@ -79,7 +79,7 @@ export default function RecipeReviewCard() {
             setSnackIsOpen(true);
 
             setTimeout(() => {
-                history.goBack();
+                history.push("/");
             }, 1500);
         } catch {
             console.log("Error with deleting course!");

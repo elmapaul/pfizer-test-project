@@ -46,7 +46,7 @@
       "title": "User eXperience (UX) Research",
       "imagePath": "/ui-ux.png",
       "price": {
-        "normal": 500,
+        "normal": "522",
         "early_bird": 450
       },
       "dates": {
@@ -81,21 +81,20 @@
       "description": "<p>This is a certified program by Athens Tech College, the first educational institution in Greece that specialises in computer science and ICT studies.</p><p>Participant’s registration (payment’s completion) implies full compliance and acceptance of Code.Learn Terms &amp; Conditions.</p>"
     },
     {
-      "id": "B5VKAaZ",
-      "title": "titled",
-      "imagePath": "",
+      "id": "B2HYGTH",
+      "title": "titled2",
+      "imagePath": "i2",
       "price": {
-        "normal": 0,
-        "early_bird": 0
+        "normal": "99",
+        "early_bird": "77"
       },
       "dates": {
-        "start_date": "2020-11-25",
+        "start_date": "2020-11-28",
         "end_date": "2020-11-29"
       },
-      "duration": "",
-      "open": false,
+      "duration": "d2",
+      "open": "false",
       "instructors": [
-        "01",
         "02"
       ],
       "description": ""

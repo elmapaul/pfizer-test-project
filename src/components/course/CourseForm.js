@@ -55,10 +55,9 @@ const courseShape = {
 };
 
 export default function CourseForm({location}) {
-    const classes = useStyles();
-
     const { course, pathname } = location;
 
+    const classes = useStyles();
     const history = useHistory();
     const [newCourse, setNewCourse] = useState(course || courseShape);
 
@@ -118,11 +117,22 @@ export default function CourseForm({location}) {
         e.preventDefault();
 
         try {
-            await axios.post(`${API_HOST_NAME}/courses`, newCourse);
-            history.goBack();
+            let method = isNewCourse ? 'POST' : 'PATCH';
+            let url = `${API_HOST_NAME}/courses`;
+
+            if (!isNewCourse) url += '/' + course?.id;
+
+            await axios({
+                method,
+                url,
+                data: newCourse
+            });
+
+            alert("Success!");
         } catch (e) {
-            console.log("Error with adding new course!", e);
-            alert("Error with adding new course!");
+            alert("Fail!");
+        } finally {
+            history.push("/");
         }
     };
 
