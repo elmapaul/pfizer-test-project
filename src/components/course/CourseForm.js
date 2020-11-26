@@ -12,6 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {API_HOST_NAME} from "../../shared/routes";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,7 +57,9 @@ const courseShape = {
 export default function CourseForm({location}) {
     const classes = useStyles();
 
-    const { course } = location;
+    const { course, pathname } = location;
+
+    const history = useHistory();
     const [newCourse, setNewCourse] = useState(course || courseShape);
 
     const {
@@ -69,12 +72,8 @@ export default function CourseForm({location}) {
         open: isOpen,
     } = newCourse;
 
-    const onHandleBookable = (e) => {
-        setNewCourse({
-            ...newCourse,
-            open: Boolean(e.target.value)
-        });
-    };
+    // Depending on route we figure out what how to act [ add/edit ]
+    const isNewCourse = pathname?.indexOf("new") > 0;
 
     // Update nested properties for names having char "."
     const onChangeNestedValues = ({target}) => {
@@ -115,19 +114,23 @@ export default function CourseForm({location}) {
       });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // axios.post(`${API_HOST_NAME}/courses`)
-        //     .then(({data}) => setCourses(data))
-        //     .catch(_ => console.log('Error with courses fetching!'));
+        try {
+            await axios.post(`${API_HOST_NAME}/courses`, newCourse);
+            history.goBack();
+        } catch (e) {
+            console.log("Error with adding new course!", e);
+            alert("Error with adding new course!");
+        }
     };
 
     return (
         <Grid component="div" container>
             <Container maxWidth="lg" className={classes.formContainer}>
                 <Typography variant="h2" color="textPrimary" component="p" className={classes.title}>
-                    ADD COURSE
+                    {isNewCourse ? "ADD COURSE" : "UPDATE COURSE"}
                 </Typography>
 
                 <Grid item xs={12}>
@@ -151,8 +154,9 @@ export default function CourseForm({location}) {
                             value={isOpen}
                             control={<Checkbox color="primary" />}
                             label="Bookable"
+                            name="open"
                             labelPlacement="end"
-                            onChange={onHandleBookable}
+                            onChange={onChangeInputHandle}
                         />
 
                         <hr style={{margin: '2em 0'}}/>
@@ -203,7 +207,6 @@ export default function CourseForm({location}) {
                             id="date-start"
                             label="Start Date"
                             type="date"
-                            defaultValue="2020-11-24"
                             style={{margin: 0}}
                             name="dates.start_date"
                             onChange={onChangeNestedValues}
@@ -214,7 +217,6 @@ export default function CourseForm({location}) {
                             label="End Date"
                             type="date"
                             name="dates.end_date"
-                            defaultValue="2020-11-24"
                             style={{margin: '0 0 4em 3em'}}
                             onChange={onChangeNestedValues}
                         />
@@ -237,7 +239,7 @@ export default function CourseForm({location}) {
 
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '2em'}}>
                             <Button variant="contained" type="submit" size="large" color="primary">
-                                Add Course
+                                {isNewCourse ? "Add course" : "Update course"}
                             </Button>
                         </div>
                     </form>

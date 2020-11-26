@@ -18,7 +18,8 @@ const useStyles = makeStyles(() => ({
         maxWidth: '450px'
     },
     media: {
-        height: 200
+        height: 200,
+        minWidth: 400
     },
     mb20: {
         marginBottom: "10px"

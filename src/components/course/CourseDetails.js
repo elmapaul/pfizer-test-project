@@ -50,7 +50,7 @@ export default function RecipeReviewCard() {
 
     useEffect(() => {
         // Build specific URL with id
-        const url = `${API_HOST_NAME}/courses/${("0" + id).slice(-2)}`;
+        const url = `${API_HOST_NAME}/courses/${id}`;
 
         axios.get(url)
             .then(({data}) => {
@@ -180,6 +180,7 @@ export default function RecipeReviewCard() {
                                         <Typography variant="h6" color="textPrimary" component="p">
                                             {bio}
                                         </Typography>
+                                        <br/><hr/>
                                     </span>
                                 ))
                             }

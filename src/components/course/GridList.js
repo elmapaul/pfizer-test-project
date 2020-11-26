@@ -36,7 +36,7 @@ export default function GridList() {
             <div className={classes.wrapper}>
                 {
                     courses?.length && courses?.map(course => (
-                        <CourseCardComponent key={course?.title} data={course}/>)
+                        <CourseCardComponent key={course?.id} data={course}/>)
                     )
                 }
             </div>
