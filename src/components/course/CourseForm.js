@@ -144,20 +144,25 @@ export default function CourseForm({location}) {
                 </Typography>
 
                 <Grid item xs={12}>
-                    <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+                    <form onSubmit={handleSubmit} className={classes.root} autoComplete="off">
                         <FormControl fullWidth className={classes.mb30}>
-                            <InputLabel htmlFor="title">Title</InputLabel>
-                            <Input placeholder="Title" name="title" id="title" value={title} onChange={onChangeInputHandle} />
+                            <InputLabel htmlFor="title">Title *</InputLabel>
+                            <Input required
+                                   inputProps={{ pattern: "[0-9a-zA-Z ]{1,50}" }}
+                                   placeholder="Title" name="title" id="title" value={title} onChange={onChangeInputHandle} />
                         </FormControl>
 
                         <FormControl fullWidth className={classes.mb30}>
-                            <InputLabel htmlFor="duration">Duration</InputLabel>
-                            <Input id="duration" placeholder="Duration" name="duration" value={duration} onChange={onChangeInputHandle} />
+                            <InputLabel htmlFor="duration">Duration *</InputLabel>
+                            <Input required
+                                   inputProps={{ pattern: "[0-9a-zA-Z- ]{1,50}" }}
+                                   id="duration" placeholder="Duration" name="duration" value={duration} onChange={onChangeInputHandle} />
                         </FormControl>
 
                         <FormControl fullWidth className={classes.mb30}>
                             <InputLabel htmlFor="image_path">Image path</InputLabel>
-                            <Input id="image_path" placeholder="Image path" name="imagePath" value={imagePath} onChange={onChangeInputHandle} />
+                            <Input inputProps={{ pattern: "[0-9a-zA-Z.\/ ]{0,100}" }}
+                                   id="image_path" placeholder="Image path" name="imagePath" value={imagePath} onChange={onChangeInputHandle} />
                         </FormControl>
 
                         <FormControlLabel
@@ -165,6 +170,7 @@ export default function CourseForm({location}) {
                             control={<Checkbox color="primary" />}
                             label="Bookable"
                             name="open"
+                            aria-required
                             labelPlacement="end"
                             onChange={onChangeInputHandle}
                         />
@@ -204,6 +210,7 @@ export default function CourseForm({location}) {
                             variant="outlined"
                             onChange={onChangeInputHandle}
                             placeholder="Description"
+                            inputProps={{ pattern: "[0-9a-zA-Z ]{0,500}" }}
                             value={description}
                             name="description"
                             style={{margin: 0, padding: 0}}
@@ -217,15 +224,25 @@ export default function CourseForm({location}) {
                             id="date-start"
                             label="Start Date"
                             type="date"
-                            style={{margin: 0}}
+                            required
+                            inputProps={{
+                                max: "2021-01-01",
+                                min: "2020-11-27"
+                            }}
                             name="dates.start_date"
                             onChange={onChangeNestedValues}
+                            style={{margin: 0}}
                         />
 
                         <TextField
                             id="date-end"
                             label="End Date"
                             type="date"
+                            required
+                            inputProps={{
+                                max: "2021-01-01",
+                                min: "2020-11-27"
+                            }}
                             name="dates.end_date"
                             style={{margin: '0 0 4em 3em'}}
                             onChange={onChangeNestedValues}
@@ -238,12 +255,14 @@ export default function CourseForm({location}) {
                         <FormControl fullWidth className={classes.mb30}>
                             <InputLabel htmlFor="component-simple">Early Bid</InputLabel>
                             <Input placeholder="Early Bid" type="number" name="price.early_bird"
+                                   required
                                    id="component-simple" value={price?.early_bird} onChange={onChangeNestedValues} />
                         </FormControl>
 
                         <FormControl fullWidth className={classes.mb30}>
                             <InputLabel htmlFor="component-simple">Normal Price</InputLabel>
                             <Input placeholder="Normal Price" type="number" name="price.normal"
+                                   required
                                    id="component-simple" value={price?.normal} onChange={onChangeNestedValues} />
                         </FormControl>
 
