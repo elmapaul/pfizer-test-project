@@ -41,8 +41,8 @@ const courseShape = {
     "title": "",
     "imagePath": "",
     "price": {
-        "normal": 0,
-        "early_bird": 0
+        "normal": "",
+        "early_bird": ""
     },
     "dates": {
         "start_date": "",
@@ -161,8 +161,9 @@ export default function CourseForm({location}) {
 
                         <FormControl fullWidth className={classes.mb30}>
                             <InputLabel htmlFor="image_path">Image path</InputLabel>
-                            <Input inputProps={{ pattern: "[0-9a-zA-Z.\/ ]{0,100}" }}
-                                   id="image_path" placeholder="Image path" name="imagePath" value={imagePath} onChange={onChangeInputHandle} />
+                            <Input id="image_path" type="file"
+                                   required
+                                   placeholder="Image path" name="imagePath" onChange={onChangeInputHandle} />
                         </FormControl>
 
                         <FormControlLabel
@@ -229,6 +230,7 @@ export default function CourseForm({location}) {
                                 max: "2021-01-01",
                                 min: "2020-11-27"
                             }}
+                            defaultValue="2020-11-27"
                             name="dates.start_date"
                             onChange={onChangeNestedValues}
                             style={{margin: 0}}
@@ -243,6 +245,7 @@ export default function CourseForm({location}) {
                                 max: "2021-01-01",
                                 min: "2020-11-27"
                             }}
+                            defaultValue="2020-11-28"
                             name="dates.end_date"
                             style={{margin: '0 0 4em 3em'}}
                             onChange={onChangeNestedValues}
@@ -252,14 +255,14 @@ export default function CourseForm({location}) {
                             Price
                         </Typography>
 
-                        <FormControl fullWidth className={classes.mb30}>
+                        <FormControl className={classes.mb30}>
                             <InputLabel htmlFor="component-simple">Early Bid</InputLabel>
                             <Input placeholder="Early Bid" type="number" name="price.early_bird"
                                    required
                                    id="component-simple" value={price?.early_bird} onChange={onChangeNestedValues} />
                         </FormControl>
 
-                        <FormControl fullWidth className={classes.mb30}>
+                        <FormControl className={classes.mb30} style={{marginLeft: "2em"}}>
                             <InputLabel htmlFor="component-simple">Normal Price</InputLabel>
                             <Input placeholder="Normal Price" type="number" name="price.normal"
                                    required

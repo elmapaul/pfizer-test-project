@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
         border: 0,
         borderRadius: '15px'
     },
+    title: {
+        fontWeight: 600,
+        fontFamily: "Avenir"
+    }
 }));
 
 export default function CenteredGrid() {
@@ -25,11 +29,11 @@ export default function CenteredGrid() {
             <Grid container>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <Typography variant="h2">
+                        <Typography variant="h2" className={classes.title}>
                             Welcome to Code.Hub Dashboard
                         </Typography>
 
-                        <Typography variant="h4" style={{paddingTop: '1em'}}>
+                        <Typography variant="h4" style={{paddingTop: '1em', letterSpacing: 12}}>
                             Manage everything and have fun!
                         </Typography>
                     </Paper>
