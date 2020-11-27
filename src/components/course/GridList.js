@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import CourseCardComponent from "./CourseCardComponent";
-import axios from "axios";
 import {API_HOST_NAME} from "../../shared/routes";
 import Typography from "@material-ui/core/Typography";
+import {useQuery} from './../../hooks/useQuery';
 
 const useStyles = makeStyles(() => ({
     title: {
@@ -19,23 +19,18 @@ const useStyles = makeStyles(() => ({
 
 export default function GridList() {
     const classes = useStyles();
-    const [courses, setCourses] = useState([]);
 
-    useEffect(() => {
-        axios.get(`${API_HOST_NAME}/courses`)
-            .then(({data}) => setCourses(data))
-            .catch(_ => console.log('Error with courses fetching!'));
-    },[]);
+    const { data: courses, error, loading } = useQuery(`${API_HOST_NAME}/courses`);
 
     return (
         <div style={{margin: '2em'}}>
             <Typography variant="h2" color="textPrimary" component="p" className={classes.title}>
-                ALL COURSES
+                { loading ? "LOADING, PLEASE WAIT..." : "ALL COURSES" }
             </Typography>
 
             <div className={classes.wrapper}>
                 {
-                    courses?.length && courses?.map(course => (
+                    !error && courses?.length && courses?.map(course => (
                         <CourseCardComponent key={course?.id} data={course}/>)
                     )
                 }

@@ -63,7 +63,6 @@ export default function CourseForm({location}) {
 
     const {
         title,
-        imagePath,
         instructors,
         duration,
         description,
@@ -161,7 +160,8 @@ export default function CourseForm({location}) {
 
                         <FormControl fullWidth className={classes.mb30}>
                             <InputLabel htmlFor="image_path">Image path</InputLabel>
-                            <Input id="image_path" type="file"
+                            <Input id="image_path"
+                                   type="file"
                                    required
                                    placeholder="Image path" name="imagePath" onChange={onChangeInputHandle} />
                         </FormControl>

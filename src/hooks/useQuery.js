@@ -22,12 +22,12 @@ export const useQuery = url => {
     useEffect(() => {
         // If url is valid
         if (/(https?:\/\/[^\s]+)/.test(url)) {
-            // IGNORE NEXT LINE: Then method due to IDE complain
+            // IGNORE NEXT LINE: Then method is used due to IDE's complain
             fetchData().then();
         } else {
             setError("Invalid URL!");
         }
-    }, [url]);
+    }, []);
 
     return { data, loading, error };
 };
