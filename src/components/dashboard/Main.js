@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Jumbotron from "./JumbotronComponent";
 import InfoBoxComponent from "./InfoBoxComponent";
 import TableGrid from "./TableGrid";
-import axios from 'axios';
 import {API_HOST_NAME} from './../../shared/routes';
+import {useQuery} from './../../hooks/useQuery';
 
 const useStyles = makeStyles({
     main: {
@@ -19,18 +19,9 @@ const useStyles = makeStyles({
 
 const Main = () => {
     const classes = useStyles();
-    const [courses, setCourses] = useState([]);
-    const [stats, setStats] = useState([]);
 
-    useEffect(() => {
-        axios.get(`${API_HOST_NAME}/courses`)
-            .then(({data}) => setCourses(data))
-            .catch(_ => console.log('Error with courses fetching!'));
-
-        axios.get(`${API_HOST_NAME}/stats`)
-            .then(({data}) => setStats(data))
-            .catch(_ => console.log('Error with stats fetching!'));
-    }, []);
+    const { data: stats } = useQuery(`${API_HOST_NAME}/stats`);
+    const { data: courses } = useQuery(`${API_HOST_NAME}/courses`);
 
     return (
         <main className={classes.main}>
@@ -38,9 +29,14 @@ const Main = () => {
 
             {/*Stats section*/}
             <div className={classes.boxContainer}>
-                {stats && stats?.map(({title, amount}) => <InfoBoxComponent title={title.toUpperCase()} key={title} count={amount}/>)}
+                {stats?.map(({title, amount}) => <InfoBoxComponent
+                    title={title.toUpperCase()}
+                    key={title}
+                    count={amount}/>)
+                }
             </div>
 
+            {/*Table*/}
             {courses?.length && <TableGrid courses={courses}/>}
         </main>
     );
