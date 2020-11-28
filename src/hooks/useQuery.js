@@ -23,7 +23,7 @@ export const useQuery = (url, method = "GET", requestData = {}) => {
         setLoading(true);
 
         try {
-            const { data } = await axios({ method, url, requestData });
+            const { data } = await axios({ method, url, data: requestData });
 
             setData(data);
         } catch (e) {

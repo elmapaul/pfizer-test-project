@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {API_HOST_NAME} from "../../shared/routes";
 import {useHistory} from "react-router-dom";
+import {useQuery} from "../../hooks/useQuery";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,7 +60,9 @@ export default function CourseForm({location}) {
 
     const classes = useStyles();
     const history = useHistory();
-    const [newCourse, setNewCourse] = useState(course || courseShape);
+    const [courseData, setNewCourse] = useState(course || courseShape);
+    const { sendRequest: addCourse } = useQuery(`${API_HOST_NAME}/courses`, 'POST', courseData);
+    const { sendRequest: updateCourse } = useQuery(`${API_HOST_NAME}/courses/${courseData?.id}`, 'PATCH', courseData);
 
     const {
         title,
@@ -68,7 +71,7 @@ export default function CourseForm({location}) {
         description,
         price,
         open: isOpen,
-    } = newCourse;
+    } = courseData;
 
     // Depending on route we figure out what how to act [ add/edit ]
     const isNewCourse = pathname?.indexOf("new") > 0;
@@ -81,9 +84,9 @@ export default function CourseForm({location}) {
 
         if (namesArray?.length === 2) {
             setNewCourse({
-                ...newCourse,
+                ...courseData,
                 [namesArray[0]]: {
-                    ...newCourse[namesArray[0]],
+                    ...courseData[namesArray[0]],
                     [namesArray[1]]: target.value
                 }
             });
@@ -91,16 +94,21 @@ export default function CourseForm({location}) {
     };
 
     const onChangeInputHandle = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+
+        // If type is file -> Extract only file name
+        if (e.target.files && e.target?.files[0]?.name) {
+            value = '/' + e.target.files[0].name;
+        }
 
         setNewCourse({
-            ...newCourse,
+            ...courseData,
             [name]: value
         });
     };
 
     const handleCheckInstructors = ({target}) => {
-      let instructors = newCourse?.instructors?.slice();
+      let instructors = courseData?.instructors?.slice();
 
       if (instructors.includes(target?.value)) {
           instructors = instructors.filter(i => i !== target.value);
@@ -109,7 +117,7 @@ export default function CourseForm({location}) {
       }
 
       setNewCourse({
-          ...newCourse,
+          ...courseData,
           instructors
       });
     };
@@ -118,16 +126,11 @@ export default function CourseForm({location}) {
         e.preventDefault();
 
         try {
-            let method = isNewCourse ? 'POST' : 'PATCH';
-            let url = `${API_HOST_NAME}/courses`;
-
-            if (!isNewCourse) url += '/' + course?.id;
-
-            await axios({
-                method,
-                url,
-                data: newCourse
-            });
+            if (isNewCourse) {
+                await addCourse();
+            } else {
+                await updateCourse();
+            }
 
             alert("Success!");
         } catch (e) {

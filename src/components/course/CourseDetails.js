@@ -47,15 +47,17 @@ export default function RecipeReviewCard() {
 
     const { data: course, loading: courseLoading } = useQuery(`${API_HOST_NAME}/courses/${id}`);
     const { data: instructors, loading } = useQuery(`${API_HOST_NAME}/instructors`);
-    const { sendRequest, loading: requestLoading } = useQuery(`${API_HOST_NAME}/courses/${id}`, 'DELETE');
+    const { sendRequest: deleteCourse } = useQuery(`${API_HOST_NAME}/courses/${id}`, 'DELETE');
 
     const handleDeleteCourse = async () => {
         try {
-            await sendRequest();
+            await deleteCourse();
 
-            setSnackIsOpen(requestLoading);
+            setSnackIsOpen(true);
 
             setTimeout(() => {
+                alert("Deleted successfully!");
+
                 history.push("/");
             }, 1500);
         } catch {
