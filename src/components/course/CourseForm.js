@@ -50,7 +50,7 @@ const courseShape = {
     },
     "duration": "",
     "open": false,
-    "instructors": ["01", "02"],
+    "instructors": [],
     "description": ""
 };
 
@@ -73,16 +73,18 @@ export default function CourseForm({location}) {
     // Depending on route we figure out what how to act [ add/edit ]
     const isNewCourse = pathname?.indexOf("new") > 0;
 
-    // Update nested properties for names having char "."
+    // [ Helper function ] Update nested properties for names having char "."
     const onChangeNestedValues = ({target}) => {
-        const arr = (target?.name).split(".");
+        // Extract from native name attribute two names as nested properties (in state)
+        // IE price.normal -> ['price', 'normal']
+        const namesArray = (target?.name).split(".");
 
-        if (arr?.length === 2) {
+        if (namesArray?.length === 2) {
             setNewCourse({
                 ...newCourse,
-                [arr[0]]: {
-                    ...newCourse[arr[0]],
-                    [arr[1]]: target.value
+                [namesArray[0]]: {
+                    ...newCourse[namesArray[0]],
+                    [namesArray[1]]: target.value
                 }
             });
         }

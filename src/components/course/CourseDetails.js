@@ -13,6 +13,7 @@ import {API_HOST_NAME, COURSE_EDIT} from "../../shared/routes";
 import {Link, useParams, useHistory} from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
+import {useQuery} from "../../hooks/useQuery";
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -40,37 +41,12 @@ function Alert(props) {
 
 export default function RecipeReviewCard() {
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
-    const [course, setCourse] = useState({});
-    const [instructors, setInstructors] = useState([]);
     const [snackIsOpen, setSnackIsOpen] = useState(false);
 
     const history = useHistory();
     const { id } = useParams();
-
-    useEffect(() => {
-        // Build specific URL with id
-        const url = `${API_HOST_NAME}/courses/${id}`;
-
-        axios.get(url)
-            .then(({data}) => {
-                const courseDetails = data;
-                setCourse(courseDetails);
-
-                // Fetch all instructors
-                axios.get(`${API_HOST_NAME}/instructors`)
-                    .then(({data}) => {
-                        // Filter by id only contained in course object
-                        const filteredInstuctors = data?.filter(i => courseDetails?.instructors?.includes(i?.id));
-
-                        setInstructors(filteredInstuctors);
-                    })
-                    .catch(_ => console.log('Error with instructors fetching!'))
-                    .finally(() => setLoading(false));
-            })
-            .catch(_ => console.log('Error with courses fetching!'))
-            .finally(() => setLoading(false));
-    }, []);
+    const { data: course, loading: courseLoading } = useQuery(`${API_HOST_NAME}/courses/${id}`);
+    const { data: instructors, loading } = useQuery(`${API_HOST_NAME}/instructors`);
 
     const handleDeleteCourse = async (id) => {
         try{
@@ -98,7 +74,7 @@ export default function RecipeReviewCard() {
         <>
             <br/>
 
-            {!loading && !!course &&
+            {(!loading || !courseLoading) && !!course &&
                 <Card>
                     <CardHeader title={course?.title}/>
                     <br/>
@@ -166,7 +142,10 @@ export default function RecipeReviewCard() {
                             </Typography>
                             <br/>
 
-                            {instructors?.map(({name, dob, email, linkedin, bio}, id) =>
+                            {instructors && instructors
+                                // Filter contained instructors in course object
+                                .filter(i => course?.instructors?.includes(i?.id))
+                                .map(({name, dob, email, linkedin, bio}, id) =>
                                 (
                                     <span key={id}>
                                         <Typography variant="h5" color="textPrimary" component="p">
