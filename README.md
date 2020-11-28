@@ -7,7 +7,6 @@ The application was bootstraped using [Create React App](https://reactjs.org/doc
 - [React Router](https://github.com/ReactTraining/react-router) - for client-side (browser) routing
 - [Axios](https://github.com/axios/axios) - for HTTP requests
 - [Material UI](https://material-ui.com/)
-- [ContextAPI](https://reactjs.org/docs/context.html)
 
 ## Fake REST API
 
