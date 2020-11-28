@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,14 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import CheckIcon from "@material-ui/icons/Check";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import axios from "axios";
 import {API_HOST_NAME, COURSE_EDIT} from "../../shared/routes";
 import {Link, useParams, useHistory} from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
 import {useQuery} from "../../hooks/useQuery";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     media: {
         height: 400
     },
@@ -45,14 +44,16 @@ export default function RecipeReviewCard() {
 
     const history = useHistory();
     const { id } = useParams();
+
     const { data: course, loading: courseLoading } = useQuery(`${API_HOST_NAME}/courses/${id}`);
     const { data: instructors, loading } = useQuery(`${API_HOST_NAME}/instructors`);
+    const { sendRequest, loading: requestLoading } = useQuery(`${API_HOST_NAME}/courses/${id}`, 'DELETE');
 
-    const handleDeleteCourse = async (id) => {
-        try{
-            await axios.delete(`${API_HOST_NAME}/courses/${id}`);
+    const handleDeleteCourse = async () => {
+        try {
+            await sendRequest();
 
-            setSnackIsOpen(true);
+            setSnackIsOpen(requestLoading);
 
             setTimeout(() => {
                 history.push("/");
