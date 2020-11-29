@@ -56,8 +56,6 @@ export default function RecipeReviewCard() {
             setSnackIsOpen(true);
 
             setTimeout(() => {
-                alert("Deleted successfully!");
-
                 history.push("/");
             }, 1500);
         } catch {
