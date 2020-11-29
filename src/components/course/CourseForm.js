@@ -14,6 +14,8 @@ import axios from 'axios';
 import {API_HOST_NAME} from "../../shared/routes";
 import {useHistory} from "react-router-dom";
 import {useQuery} from "../../hooks/useQuery";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,6 +63,7 @@ export default function CourseForm({location}) {
     const classes = useStyles();
     const history = useHistory();
     const [courseData, setNewCourse] = useState(course || courseShape);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
     const { sendRequest: addCourse } = useQuery(`${API_HOST_NAME}/courses`, 'POST', courseData);
     const { sendRequest: updateCourse } = useQuery(`${API_HOST_NAME}/courses/${courseData?.id}`, 'PATCH', courseData);
 
@@ -132,11 +135,13 @@ export default function CourseForm({location}) {
                 await updateCourse();
             }
 
-            alert("Success!");
+            setSnackIsOpen(true);
         } catch (e) {
             alert("Fail!");
         } finally {
-            history.push("/");
+            setTimeout(() => {
+                history.push("/");
+            }, 2000);
         }
     };
 
@@ -282,6 +287,12 @@ export default function CourseForm({location}) {
                     </form>
                 </Grid>
             </Container>
+
+            <Snackbar open={snackIsOpen} autoHideDuration={6000}>
+                <Alert severity="info">
+                    Course has been updated successfully!
+                </Alert>
+            </Snackbar>
         </Grid>
     );
 }
